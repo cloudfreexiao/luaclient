@@ -1,0 +1,15 @@
+# project termbox (1.0.0) configured on Sat Jan 26 01:33:23 2019 by
+# waf 1.8.0 (abi 98, python 2070ff0 on darwin)
+# using ./waf configure
+#
+----------------------------------------
+Setting top to
+/Users/cloudfreexiao/workspace/ant-skynet/client/termfx/termbox
+----------------------------------------
+Setting out to
+/Users/cloudfreexiao/workspace/ant-skynet/client/termfx/termbox/build
+----------------------------------------
+Checking for 'clang' (C compiler)
+find program=['clang'] paths=['/usr/local/bin', '/usr/bin', '/bin', '/usr/sbin', '/sbin', '/usr/local/share/dotnet', '~/.dotnet/tools', '/Library/Frameworks/Mono.framework/Versions/Current/Commands', '/Users/cloudfreexiao/.cargo/bin', '/Users/cloudfreexiao/bin/flutter/bin', '/Users/cloudfreexiao/go/bin', '/Users/cloudfreexiao/bin/gdbgui/bin'] var='CC' -> ['/usr/bin/clang']
+find program=['ar'] paths=['/usr/local/bin', '/usr/bin', '/bin', '/usr/sbin', '/sbin', '/usr/local/share/dotnet', '~/.dotnet/tools', '/Library/Frameworks/Mono.framework/Versions/Current/Commands', '/Users/cloudfreexiao/.cargo/bin', '/Users/cloudfreexiao/bin/flutter/bin', '/Users/cloudfreexiao/go/bin', '/Users/cloudfreexiao/bin/gdbgui/bin'] var='AR' -> ['/usr/bin/ar']
+/usr/bin/clang
