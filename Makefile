@@ -35,7 +35,7 @@ $(TERMFX_SO) : | $(LUA_CLIB_PATH)
 $(LUASOCKET_SO) : $(LUA_CLIB_PATH)
 	PLAT=$(PLAT) DEBUG=NODEBUG LUAV=5.3 LUAINC_$(PLAT)=../../../$(LUA_INC) $(MAKE) -C $(LUASOCKET_INC)
 	cp -f $(LUASOCKET_INC)/src/socket-3.0-rc1.so $@
-	# cp -f $(LUASOCKET_INC)/src/mime-1.0.3.so $(MIME_SO)
+	cp -f $(LUASOCKET_INC)/src/mime-1.0.3.so $(MIME_SO)
 
 
 $(CRYPT_SO) : lualib-src/crypt/lua-crypt.c lualib-src/crypt/lsha1.c | $(LUA_CLIB_PATH)

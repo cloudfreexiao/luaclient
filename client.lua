@@ -1,65 +1,55 @@
 #!/usr/bin/env lua53
 assert(_VERSION == "Lua 5.3")
 
-package.path  = "lualib/?.lua;lualib/socket/?.lua;" .. package.path
+package.path  = "lualib/?.lua;lualib/socket/?.lua;lualib/termfx/?.lua;" .. package.path
 package.cpath = "luaclib/?.so;"
 
-local simpleui = require "simpleui"
 inspect = require "inspect"
 
-local websocket_async = require "websocket.client_async"
+local ws_client = require "ws_client"
+local tfx = require "termfx"
+local ui = require "simpleui"
 
-local ws_client = {}
 
-local function connect(self, protocol)
-    self.ws = websocket_async()
-
-    self.ws:on_message(function(message)
-        print("Receiving: '" .. tostring(message) .. "'")
-    end)
-    self.ws:on_connected(function(ok, err)
-        if err then
-            print("on_connected error", err)
-            self.ws:close()
-            self.ws = nil
-        else
-            print("connect succ")
-            self.is_connected = true
-        end
-    end)
-
-    self.ws:on_disconnected(function()
-        print("Disconnected")
-        self.ws = nil
-        self.is_connected = false
-    end)
+ok, err = pcall(function()
+    tfx.init()
+    tfx.inputmode(tfx.input.ALT + tfx.input.MOUSE)
+    tfx.outputmode(tfx.output.COL256)
     
-    local url = nil
-    local sslparams =  nil
-    if protocol == "ws" then
-        url = "ws://echo.websocket.org"
+    ws_client.connect()
+end)
+
+local function do_tfx_evt(evt)
+    if evt.char == "q" or evt.char == "Q" then
+        return ui.ask("Really quit?")
     else
-        sslparams = {
-            mode = "client",
-            protocol = "tlsv1_2",
-            verify = "none",
-            options = "all",
-        }
-        url = "wss://echo.websocket.org"
+        ws_client.send("hello world")
     end
-    
-    print("Connecting to " .. url)
-    self.ws:connect(url, nil, sslparams)
+
+    if evt.key == tfx.key.CTRL_C then
+        return true
+    end
+
+    return false
 end
 
+ok, err = pcall(function()
+    local quit = false
+    local evt = {}
 
-connect(ws_client, "ws")
+    repeat
+        tfx.clear(tfx.color.WHITE, tfx.color.BLACK)
+        tfx.printat(1, tfx.height(), "press Q to quit")
+        
+        tfx.present()
+        evt = tfx.pollevent()
+        ws_client.update()
+        
+        tfx.attributes(tfx.color.WHITE, tfx.color.BLUE)
 
-while true do
-    if ws_client.ws then
-        ws_client.ws.step()
-        if ws_client.is_connected then
-            ws_client.ws:send("hello world")
-        end
-    end
-end
+        quit = do_tfx_evt(evt)
+    until quit
+end)
+ws_client.shutdown()
+tfx.shutdown()
+if not ok then print("Error: "..err) end
