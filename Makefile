@@ -17,7 +17,7 @@ MIME_SO 		 		= $(LUA_CLIB_PATH)$(MIME_NAME)
 CRYPT_SO 		 		= $(LUA_CLIB_PATH)crypt.so
 
 
-all: $(TERMFX_SO) \
+all: luabin $(TERMFX_SO) \
 	$(LUASOCKET_SO) $(CRYPT_SO) \
 
 #####################################################
@@ -27,6 +27,9 @@ ifeq ($(PLAT),macosx)
 else
 	OS = linux
 endif
+
+luabin:
+	cd lua && $(MAKE) PLAT=$(PLAT)
 
 $(TERMFX_SO) : | $(LUA_CLIB_PATH)
 	cd $(TERMFX_INC) && $(MAKE) OS=$(OS) LUA_INCLUDE_DIR=$(LUA_INC)
@@ -48,5 +51,6 @@ client:
 
 clean:
 	rm -f $(LUA_CLIB_PATH)*.so
+	cd $(LUA_INC) && $(MAKE) clean
 
 .PHONY: all clean

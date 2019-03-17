@@ -4,4 +4,6 @@
 *..DS_Store
 *.so
 *.o
-
+*.a
+lua
+luac
