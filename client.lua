@@ -6,10 +6,11 @@ package.cpath = "luaclib/?.so;"
 
 inspect = require "inspect"
 
-local ws_client = require "ws_client"
 local tfx = require "termfx"
 local ui = require "simpleui"
 
+local ws_client = require "ws_client"
+local http_client = require "http_client"
 
 ok, err = pcall(function()
     tfx.init()
@@ -22,6 +23,8 @@ end)
 local function do_tfx_evt(evt)
     if evt.char == "q" or evt.char == "Q" then
         return ui.ask("Really quit?")
+    elseif evt.char == 'h' or evt.char == "H" then
+        http_client.request_uri()
     else
         ws_client.send("hello world")
     end
